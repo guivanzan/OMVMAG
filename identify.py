@@ -3,7 +3,7 @@ from ResNet import identity_block,convolutional_block,ResNet34
 import numpy as np
 from formatting import formating
 import tkinter as tk
-from tkinter.filedialog import askopenfilename,askopenfilenames,askdirectory
+from tkinter.filedialog import askopenfilename,askdirectory
  # part of the import if you are not using other tkinter functions
 
 input_shape = (36, 18, 1)
