@@ -1,4 +1,4 @@
-from numpy import array
+from numpy import array,ndarray
 from pandas import read_csv
 from scipy.signal import resample_poly
 from fractions import Fraction
@@ -21,7 +21,8 @@ def resampling():
     n = len(line)
     [P,Q] = rat(1440/n)
     line = resample_poly(line,P,Q,padtype='mean')
-
-    line = line.reshape(1,1440)
+#     line = ndarray.tolist(line)
+#     del line[-1]
+    line = array(line).reshape(1,1440)
 
     return line[0]

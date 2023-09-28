@@ -8,7 +8,7 @@ from tkinter.filedialog import askopenfilename
 
 Tk().withdraw()
 linhaZ = load(askopenfilename(title='Selecione uma tabela de médias horárias (.npy)'))
-medias = hstack((linhaZ[15][12:],linhaZ[16][:12]))
+medias = hstack((linhaZ[15][13:],linhaZ[16][:13]))
 maggram = resampling()
 
 plotmag(medias,maggram)

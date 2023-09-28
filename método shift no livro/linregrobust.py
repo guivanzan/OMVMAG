@@ -1,4 +1,4 @@
-from numpy import mean,array,ndarray
+from numpy import mean,array,ndarray,diag,sqrt
 #import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit,least_squares
 
@@ -11,7 +11,7 @@ horas = array(horas).reshape(24,1)
 def model(x,m,b):
         return m*x+b
 
-def linreg(medias,maggram):
+def linregrobust(medias,maggram):
     maggram = maggram + abs(min(maggram))
     maggram_medias_horarias = []
 
@@ -32,12 +32,36 @@ def linreg(medias,maggram):
     
     maggram_medias_horarias = array(maggram_medias_horarias).reshape(24,1)
     
+    maggram_medias_horarias = array(maggram_medias_horarias).reshape(24,1)
+    
     target = array(medias).reshape(24,1)
     target_flat = ndarray.flatten(target)
 
     maggram_medias_horarias_flat = ndarray.flatten(maggram_medias_horarias)
 
-    p1,cov  = curve_fit(model,maggram_medias_horarias_flat,target_flat)
+    p1,cov  = curve_fit(model,maggram_medias_horarias_flat,target_flat,method='trf',loss='cauchy')
+
+    newTarget = model(maggram_medias_horarias,*p1)
+
+    absDeviation = abs(newTarget - target)
+
+    stdDev = sqrt(diag(cov))
+
+    goodTargets = []
+    goodMeans = []
+    for i in range(len(absDeviation)):
+         if absDeviation[i] < sqrt(stdDev[1]):
+            goodTargets.append(target[i])
+            goodMeans.append(maggram_medias_horarias_flat[i])
+         else:
+            None
+    goodTargets = array(goodTargets)
+    goodTargets = ndarray.flatten(goodTargets)
+
+    goodMeans = array(goodMeans)
+    goodMeans = ndarray.flatten(goodMeans)
+
+    p1,cov = curve_fit(model,goodMeans,goodTargets)
     
     return p1,maggram_medias_horarias,target,cov
 
