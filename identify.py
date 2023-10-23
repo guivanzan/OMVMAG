@@ -1,4 +1,3 @@
-__name__ = '__main__'
 from ResNet import identity_block,convolutional_block,ResNet34
 import numpy as np
 from formatting import formating
